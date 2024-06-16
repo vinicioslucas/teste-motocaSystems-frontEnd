@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, ButtonProps, CircularProgress } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
+
+/// Componente reutilizavel de botão
 interface ReusableButtonProps extends ButtonProps {
   isLoading?: boolean;
   label: string;

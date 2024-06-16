@@ -3,6 +3,7 @@ import { TextField, Box, Typography, ThemeProvider, MenuItem } from '@mui/materi
 import theme from '../themes/violeta';
 import ReusableButton from './ReusableButton/ReusableButton';
 
+// Interface que define a estrutura de dados de uma Moto
 interface Moto {
   codigo: string;
   modelo: string;
@@ -11,15 +12,19 @@ interface Moto {
   status: string;
 }
 
+// Props esperadas pelo componente MotoForm
 interface MotoFormProps {
-  onSave: (moto: Moto) => void;
-  initialData?: Moto;
+  onSave: (moto: Moto) => void; // Função para salvar uma Moto
+  initialData?: Moto; // Dados iniciais opcionais para preencher o formulário
 }
 
+// Opções para o campo de seleção de status da moto
 const statusOptions = ['Em estoque', 'Sem estoque', 'Em trânsito'];
 
+// Componente funcional MotoForm
 export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
-   const [formData, setFormData] = useState<Moto>(initialData || {
+  // Estado local para armazenar os dados do formulário
+  const [formData, setFormData] = useState<Moto>(initialData || {
     codigo: '',
     modelo: '',
     cor: '',
@@ -27,8 +32,10 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
     status: '',
   });
 
+  // Estado para controlar o carregamento
   const [isLoading, setIsLoading] = useState(false);
 
+  // Função para lidar com mudanças nos campos do formulário
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
@@ -36,19 +43,21 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
     });
   };
 
+  // Função para lidar com o envio do formulário
   const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+    e.preventDefault(); // Evita o comportamento padrão de submit do formulário
+    setIsLoading(true); // Define isLoading como true para mostrar um indicador de carregamento
 
     try {
-      await onSave(formData);
+      await onSave(formData); // Chama a função onSave passando os dados do formulário
     } catch (error) {
-      console.error('Erro ao salvar:', error);
+      console.error('Erro ao salvar:', error); // Loga um erro caso ocorra
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Define isLoading como false ao finalizar, independentemente de sucesso ou erro
     }
   };
 
+  // Renderização do componente MotoForm
   return (
     <ThemeProvider theme={theme}>
       <Box
@@ -62,6 +71,7 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
           backgroundColor: theme.palette.primary.main,
         }}
       >
+        {/* Título do formulário */}
         <Typography
           fontWeight='bold'
           fontSize='30px'
@@ -71,7 +81,10 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
         >
           Preencha as informações abaixo para registrar uma Moto 🏍️
         </Typography>
+
+        {/* Formulário */}
         <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '600px' }}>
+          {/* Campo de entrada para o código da moto */}
           <TextField
             label='Código'
             name="codigo"
@@ -86,6 +99,7 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
             }}
           />
 
+          {/* Campo de entrada para o modelo da moto */}
           <TextField
             label="Modelo"
             name="modelo"
@@ -100,6 +114,7 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
             }}
           />
 
+          {/* Campo de entrada para a cor da moto */}
           <TextField
             label="Cor"
             name="cor"
@@ -114,6 +129,7 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
             }}
           />
 
+          {/* Campo de entrada para o valor da moto */}
           <TextField
             label="Valor"
             name="valor"
@@ -129,6 +145,7 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
             }}
           />
 
+          {/* Campo de seleção para o status da moto */}
           <TextField
             select
             label="Status"
@@ -143,6 +160,7 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
               style: { borderRadius: '10px', border: '1px solid white', color: 'white' },
             }}
           >
+            {/* Opções de status para seleção */}
             {statusOptions.map((option) => (
               <MenuItem key={option} value={option}>
                 {option}
@@ -150,6 +168,7 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
             ))}
           </TextField>
 
+          {/* Botão reutilizável para submeter o formulário */}
           <ReusableButton
             type="submit"
             color="secondary"
@@ -165,6 +184,3 @@ export const MotoForm: React.FC<MotoFormProps> = ({ onSave, initialData }) => {
 };
 
 export default MotoForm;
-
-
-
